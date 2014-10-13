@@ -24,9 +24,26 @@
 
 __all__ = ['__version__']
 
-import pbr.version
+class VersionInfo(object):
+    release = "REDHATTROVERELEASE"
+    version = "REDHATTROVEVERSION"
 
-version_info = pbr.version.VersionInfo('trove')
+    def version_string(self):
+        return self.version
+
+    def cached_version_string(self):
+        return self.version
+
+    def release_string(self):
+        return self.release
+
+    def canonical_version_string(self):
+        return self.version
+
+    def version_string_with_vcs(self):
+        return self.release
+
+version_info = VersionInfo()
 # We have a circular import problem when we first run python setup.py sdist
 # It's harmless, so deflect it.
 try:
