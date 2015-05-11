@@ -54,10 +54,10 @@ INCLUDE_MARKER_OPERATORS = {
     False: ">"
 }
 
-MYSQL_CONFIG = "/etc/mysql/my.cnf"
+MYSQL_CONFIG = "/etc/my.cnf"
 MYSQL_SERVICE_CANDIDATES = ["mysql", "mysqld", "mysql-server"]
 MYSQL_BIN_CANDIDATES = ["/usr/sbin/mysqld", "/usr/libexec/mysqld"]
-MYCNF_OVERRIDES = "/etc/mysql/conf.d/overrides.cnf"
+MYCNF_OVERRIDES = "/etc/my.cnf.d/conf.d/overrides.cnf"
 MYCNF_OVERRIDES_TMP = "/tmp/overrides.cnf.tmp"
 
 
@@ -637,7 +637,7 @@ class MySqlApp(object):
                 pass
 
     def _create_mysql_confd_dir(self):
-        conf_dir = "/etc/mysql/conf.d"
+        conf_dir = "/etc/my.cnf.d/conf.d"
         LOG.debug("Creating %s" % conf_dir)
         command = "sudo mkdir -p %s" % conf_dir
         utils.execute_with_timeout(command, shell=True)
