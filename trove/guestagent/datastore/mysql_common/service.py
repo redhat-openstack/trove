@@ -69,11 +69,13 @@ OS_NAME = operating_system.get_os()
 MYSQL_CONFIG = {operating_system.REDHAT: "/etc/my.cnf",
                 operating_system.DEBIAN: "/etc/mysql/my.cnf",
                 operating_system.SUSE: "/etc/my.cnf"}[OS_NAME]
-MYSQL_SERVICE_CANDIDATES = ["mysql", "mysqld", "mysql-server"]
+MYSQL_SERVICE_CANDIDATES = ["mariadb", "mysql", "mysqld", "mysql-server"]
 MYSQL_BIN_CANDIDATES = ["/usr/sbin/mysqld", "/usr/libexec/mysqld"]
 MYSQL_OWNER = 'mysql'
 CNF_EXT = 'cnf'
-CNF_INCLUDE_DIR = '/etc/mysql/conf.d/'
+CNF_INCLUDE_DIR = {operating_system.REDHAT: "/etc/my.cnf.d/",
+                   operating_system.DEBIAN: "/etc/mysql/conf.d/",
+                   operating_system.SUSE: "/etc/my.cnf.d/"}[OS_NAME]
 CNF_MASTER = 'master-replication'
 CNF_SLAVE = 'slave-replication'
 
@@ -700,7 +702,7 @@ class BaseMySqlApp(object):
         """Clear old configs, which can be incompatible with new version."""
         LOG.debug("Clearing old MySQL config.")
         random_uuid = str(uuid.uuid4())
-        configs = ["/etc/my.cnf", "/etc/mysql/conf.d", "/etc/mysql/my.cnf"]
+        configs = ["/etc/my.cnf", "/etc/my.cnf.d"]
         for config in configs:
             try:
                 old_conf_backup = "%s_%s" % (config, random_uuid)
@@ -711,7 +713,7 @@ class BaseMySqlApp(object):
                 pass
 
     def _create_mysql_confd_dir(self):
-        conf_dir = "/etc/mysql/conf.d"
+        conf_dir = "/etc/my.cnf.d"
         LOG.debug("Creating %s." % conf_dir)
         operating_system.create_directory(conf_dir, as_root=True)
 

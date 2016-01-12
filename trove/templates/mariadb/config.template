@@ -13,7 +13,7 @@ basedir = /usr
 datadir = /var/lib/mysql/data
 ####tmpdir = /tmp
 tmpdir = /var/tmp
-pid_file = /var/run/mysqld/mysqld.pid
+pid_file = /var/run/mariadb/mariadb.pid
 skip-external-locking = 1
 key_buffer_size = {{ (50 * flavor['ram']/512)|int }}M
 max_allowed_packet = {{ (1024 * flavor['ram']/512)|int }}K
@@ -54,4 +54,4 @@ max_allowed_packet = 16M
 [isamchk]
 key_buffer = 16M
 
-!includedir /etc/mysql/conf.d/
+!includedir /etc/my.cnf.d/
